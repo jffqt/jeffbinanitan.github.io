@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Jefferson Binanitan — IT Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --surface: #12121a;
+    --surface2: #1a1a26;
+    --border: rgba(255,255,255,0.07);
+    --accent: #4f8ef7;
+    --accent2: #a78bfa;
+    --accent-glow: rgba(79,142,247,0.15);
+    --text: #e8e8f0;
+    --text-muted: #8888aa;
+    --text-dim: #555570;
+    --white: #ffffff;
+    --tag-bg: rgba(79,142,247,0.1);
+    --tag-border: rgba(79,142,247,0.25);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 400;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* NOISE OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.25rem 4rem;
+    background: rgba(10,10,15,0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2.5rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--white); }
+
+  /* SECTIONS */
+  section {
+    position: relative;
+    z-index: 1;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 5rem 2rem;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-width: 100%;
+    padding: 0 4rem;
+  }
+
+  .hero-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    border-radius: 100px;
+    padding: 0.35rem 1rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  h1.hero-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem);
+    line-height: 1.05;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    animation: fadeUp 0.7s 0.1s ease both;
+  }
+
+  h1.hero-name em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .hero-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 1rem;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 2rem;
+    animation: fadeUp 0.7s 0.2s ease both;
+  }
+
+  .hero-summary {
+    font-size: 1.2rem;
+    color: var(--text);
+    max-width: 600px;
+    line-height: 1.8;
+    font-weight: 300;
+    animation: fadeUp 0.7s 0.3s ease both;
+  }
+
+  .hero-summary strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 1rem;
+    margin-top: 3rem;
+    animation: fadeUp 0.7s 0.4s ease both;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.75rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.2s;
+    cursor: pointer;
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 0 24px rgba(79,142,247,0.3);
+  }
+
+  .btn-primary:hover {
+    background: #6aa0ff;
+    box-shadow: 0 0 36px rgba(79,142,247,0.5);
+    transform: translateY(-1px);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+  }
+
+  .btn-ghost:hover {
+    color: var(--white);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-1px);
+  }
+
+  /* HERO GLOW */
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    right: 5%;
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(ellipse, rgba(79,142,247,0.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* SECTION HEADERS */
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+
+  h2.section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 2.5rem;
+  }
+
+  /* DIVIDER */
+  .divider {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    margin: 0 auto;
+  }
+
+  /* ABOUT */
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .about-text p {
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.9;
+    margin-bottom: 1.25rem;
+    font-weight: 300;
+  }
+
+  .about-text p:last-child { margin-bottom: 0; }
+
+  .about-text strong {
+    color: var(--white);
+    font-weight: 600;
+  }
+
+  .about-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .stat-card:hover {
+    border-color: rgba(79,142,247,0.3);
+    transform: translateX(4px);
+  }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.5rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-label {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  /* SKILLS */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .skill-category {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.75rem;
+    transition: border-color 0.2s;
+  }
+
+  .skill-category:hover {
+    border-color: rgba(167,139,250,0.3);
+  }
+
+  .skill-category-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .skill-category-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  .skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .skill-tag {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.3rem 0.65rem;
+    font-size: 0.82rem;
+    color: var(--text);
+    font-weight: 500;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* PROJECT */
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .project-card:hover {
+    border-color: rgba(79,142,247,0.3);
+  }
+
+  .project-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .project-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: rgba(167,139,250,0.1);
+    border: 1px solid rgba(167,139,250,0.2);
+    border-radius: 100px;
+    padding: 0.3rem 0.85rem;
+    font-size: 0.72rem;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent2);
+    letter-spacing: 0.08em;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.85rem;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+  }
+
+  .project-role {
+    font-size: 0.85rem;
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.5rem;
+  }
+
+  .project-desc {
+    color: var(--text);
+    font-size: 1rem;
+    line-height: 1.85;
+    font-weight: 300;
+    margin-bottom: 2rem;
+  }
+
+  .project-features {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .feature-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+    margin-top: 0.55rem;
+  }
+
+  .feature-text {
+    font-size: 0.875rem;
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .project-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .stack-tag {
+    background: var(--tag-bg);
+    border: 1px solid var(--tag-border);
+    border-radius: 6px;
+    padding: 0.3rem 0.75rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--accent);
+  }
+
+  /* CERTS */
+  .certs-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+
+  .cert-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .cert-card:hover {
+    border-color: rgba(79,142,247,0.25);
+    transform: translateY(-2px);
+  }
+
+  .cert-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .cert-name {
+    font-size: 0.875rem;
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .cert-issuer {
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 0.2rem;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 6rem 2rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .cta-section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 1.25rem;
+  }
+
+  .cta-section h2 em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .cta-section p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+
+  .cta-links {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .contact-line {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    text-align: center;
+    padding: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .contact-line a {
+    color: var(--text-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .contact-line a:hover { color: var(--accent); }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { padding: 0 1.5rem; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .project-features { grid-template-columns: 1fr; }
+    section { padding: 4rem 1.5rem; }
+    .project-card { padding: 2rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">JB.dev</span>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#project">Project</a></li>
+    <li><a href="#certs">Certifications</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="home">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-badge">Available for opportunities</div>
+    <h1 class="hero-name">Jefferson<br/><em>Binanitan</em></h1>
+    <p class="hero-title">// IT Graduate &amp; Software Developer — Cavite, PH</p>
+    <p class="hero-summary">
+      A <strong>detail-oriented IT professional</strong> who builds practical software solutions from the ground up. From designing networked desktop systems to diving into cybersecurity fundamentals — I turn technical knowledge into things that actually work.
+    </p>
+    <div class="hero-cta">
+      <a href="mailto:jeffbinanitan@gmail.com" class="btn btn-primary">Get in Touch</a>
+      <a href="#project" class="btn btn-ghost">View Project ↓</a>
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="fade-in">
+    <p class="section-label">// 01 — About Me</p>
+    <h2 class="section-title">The person<br/>behind the code.</h2>
+  </div>
+  <div class="about-grid fade-in">
+    <div class="about-text">
+      <p>
+        I'm a <strong>Bachelor of Science in Information Technology graduate</strong> from City College of Tagaytay, with a strong foundation in software development, networking, and systems thinking. My academic journey was shaped by hands-on work — not just reading about problems, but building solutions to them.
+      </p>
+      <p>
+        My capstone project pushed me to work across the full stack of a networked application: designing the architecture, writing the communication protocols, debugging live in a lab environment, and shipping something that faculty could actually use. That experience taught me more about real-world software than any textbook could.
+      </p>
+      <p>
+        I'm currently deepening my knowledge in <strong>cybersecurity and networking</strong>, holding multiple certifications from Cisco and Fortinet. I'm drawn to environments where I can keep learning, contribute meaningfully to a team, and take on challenges that stretch my skills.
+      </p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-card">
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Certifications earned across cybersecurity, networking, and data science</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">4+</div>
+        <div class="stat-label">Programming languages in active use</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">1</div>
+        <div class="stat-label">Fully architected and deployed capstone system — built from scratch</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="fade-in">
+    <p class="section-label">// 02 — Skills</p>
+    <h2 class="section-title">Tools &amp; technologies<br/>I work with.</h2>
+  </div>
+  <div class="skills-grid fade-in">
+    <div class="skill-category">
+      <div class="skill-category-icon">⌨️</div>
+      <div class="skill-category-name">Languages</div>
+      <div class="skill-tags">
+        <span class="skill-tag">C#</span>
+        <span class="skill-tag">Java</span>
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">VB.NET</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-category-icon">🌐</div>
+      <div class="skill-category-name">Web / Markup</div>
+      <div class="skill-tags">
+        <span class="skill-tag">HTML</span>
+        <span class="skill-tag">CSS</span>
+        <span class="skill-tag">JavaScript</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-category-icon">🗄️</div>
+      <div class="skill-category-name">Database</div>
+      <div class="skill-tags">
+        <span class="skill-tag">SQL</span>
+        <span class="skill-tag">MySQL</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-category-icon">🖥️</div>
+      <div class="skill-category-name">Desktop / UI</div>
+      <div class="skill-tags">
+        <span class="skill-tag">WPF</span>
+        <span class="skill-tag">.NET</span>
+        <span class="skill-tag">XAML</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-category-icon">🔌</div>
+      <div class="skill-category-name">Networking</div>
+      <div class="skill-tags">
+        <span class="skill-tag">TCP/IP</span>
+        <span class="skill-tag">LAN</span>
+        <span class="skill-tag">Socket Programming</span>
+      </div>
+    </div>
+    <div class="skill-category">
+      <div class="skill-category-icon">🤝</div>
+      <div class="skill-category-name">Soft Skills</div>
+      <div class="skill-tags">
+        <span class="skill-tag">Teamwork</span>
+        <span class="skill-tag">Problem-Solving</span>
+        <span class="skill-tag">Adaptability</span>
+        <span class="skill-tag">Time Management</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PROJECT -->
+<section id="project">
+  <div class="fade-in">
+    <p class="section-label">// 03 — Featured Project</p>
+    <h2 class="section-title">Built something<br/>that solved a real problem.</h2>
+  </div>
+  <div class="project-card fade-in">
+    <div class="project-badge">Capstone Project — Lead Developer</div>
+    <h3 class="project-title">LAN-Based File Transfer &amp;<br/>Remote Management System</h3>
+    <p class="project-role">↳ Full-stack desktop application for laboratory PC management</p>
+    <p class="project-desc">
+      Designed and built a centralized remote management platform for computer laboratory environments. The system enables a single administrator to monitor, control, and distribute files to multiple student workstations simultaneously — replacing the need for manual, machine-by-machine management. Built entirely with custom TCP socket communication over a local area network, the application delivers real-time responsiveness without relying on third-party remote access tools.
+    </p>
+    <div class="project-features">
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div class="feature-text"><strong>Real-time screen monitoring</strong> — live view of student PC activity from the admin workstation</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div class="feature-text"><strong>Remote PC control</strong> — lock/unlock, restart, and screen blackout for individual or all clients</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div class="feature-text"><strong>Bulk file distribution</strong> — transfer files from the admin PC to multiple client machines simultaneously</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div class="feature-text"><strong>Custom TCP protocol</strong> — lightweight client-server architecture built without third-party networking libraries</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div class="feature-text"><strong>WPF admin dashboard</strong> — clean, organized interface for managing all connected lab machines in one view</div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-dot"></div>
+        <div class="feature-text"><strong>Performance optimized</strong> — stress-tested and debugged for reliability in a live multi-PC lab environment</div>
+      </div>
+    </div>
+    <div class="project-stack">
+      <span class="stack-tag">C#</span>
+      <span class="stack-tag">WPF / XAML</span>
+      <span class="stack-tag">.NET Framework</span>
+      <span class="stack-tag">TCP Sockets</span>
+      <span class="stack-tag">LAN Networking</span>
+      <span class="stack-tag">Multi-threading</span>
+      <span class="stack-tag">Custom Protocol</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CERTS -->
+<section id="certs">
+  <div class="fade-in">
+    <p class="section-label">// 04 — Certifications</p>
+    <h2 class="section-title">Credentials &amp;<br/>continuous learning.</h2>
+  </div>
+  <div class="certs-grid fade-in">
+    <div class="cert-card">
+      <div class="cert-icon">🏅</div>
+      <div>
+        <div class="cert-name">TOPCIT 2025 — Level 2</div>
+        <div class="cert-issuer">Advanced Beginner Competency in IT</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🛡️</div>
+      <div>
+        <div class="cert-name">Fortinet Certified Fundamentals in Cybersecurity</div>
+        <div class="cert-issuer">Fortinet · Valid until March 2028</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🔐</div>
+      <div>
+        <div class="cert-name">Fortinet NSE 1 — Introduction to Threat Landscape</div>
+        <div class="cert-issuer">Fortinet · 2026</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🔒</div>
+      <div>
+        <div class="cert-name">Fortinet NSE 2 — Technical Introduction to Cybersecurity</div>
+        <div class="cert-issuer">Fortinet · 2026</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🌐</div>
+      <div>
+        <div class="cert-name">Introduction to Cybersecurity</div>
+        <div class="cert-issuer">Cisco Networking Academy · March 2026</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🌐</div>
+      <div>
+        <div class="cert-name">Networking Basics</div>
+        <div class="cert-issuer">Cisco Networking Academy · April 2026</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">📊</div>
+      <div>
+        <div class="cert-name">Introduction to Data Science</div>
+        <div class="cert-issuer">Cisco Networking Academy · April 2026</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">🔑</div>
+      <div>
+        <div class="cert-name">Getting Started in Cybersecurity 3.0</div>
+        <div class="cert-issuer">Fortinet · 2026</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">💼</div>
+      <div>
+        <div class="cert-name">DICT ICT User Certification — Basic Office Productivity</div>
+        <div class="cert-issuer">DICT Philippines · Proficient Level</div>
+      </div>
+    </div>
+    <div class="cert-card">
+      <div class="cert-icon">⚡</div>
+      <div>
+        <div class="cert-name">Microsoft Elevate for Changemakers</div>
+        <div class="cert-issuer">Microsoft · 2026</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- CTA -->
+<div id="contact">
+  <div class="cta-section fade-in">
+    <h2>Let's build something<br/><em>worth building.</em></h2>
+    <p>I'm actively looking for opportunities where I can contribute, grow, and work alongside people who care about what they build. If that sounds like your team — let's talk.</p>
+    <div class="cta-links">
+      <a href="mailto:jeffbinanitan@gmail.com" class="btn btn-primary">jeffbinanitan@gmail.com</a>
+      <a href="https://linkedin.com/in/jeffbinanitan" class="btn btn-ghost" target="_blank">LinkedIn ↗</a>
+    </div>
+  </div>
+  <div class="contact-line">
+    <a href="tel:+639565904687">0956-590-4687</a> · Purok 2, Kabulusan, Magallanes, Cavite, PH · Built by Jefferson Binanitan
+  </div>
+</div>
+
+<script>
+  // Fade-in on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
